@@ -378,7 +378,7 @@ struct MultiplayerGameView: View {
                                         .cornerRadius(30)
                                 }
                             }else if !matchManager.isStacking
-                                        && checkCompatibleCards() == false && matchManager.currentPlayer == 0 && !nextPlayerMenu
+                                        && checkCompatibleCards() == false && !nextPlayerMenu
                             {
                                 Button(action: {
                                     matchManager.cards[matchManager.currentPlayer].insert(cardDeck.drawCard(), at: 0)
@@ -476,6 +476,7 @@ struct MultiplayerGameView: View {
                                 .padding()
                             
                             Button(action: {
+                                selectedCard = 0
                                 chosenColor(index: colorChooserIndex)
                                 showColorChooser = false
                                 nextPlayerMenu = true
@@ -869,10 +870,11 @@ struct MultiplayerGameView: View {
     func endTurn(){
         matchManager.isDrawing = false
         
+        selectedCard = 0
+        
         if matchManager.lastDrawnCard?.color == "Black"{
             showColorChooser = true
         }else{
-            selectedCard = 0
             hideCards = true
             nextPlayerMenu = true
             nextTurn()
