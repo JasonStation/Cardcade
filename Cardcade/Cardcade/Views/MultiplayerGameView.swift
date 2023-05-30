@@ -240,7 +240,11 @@ struct MultiplayerGameView: View {
                             
                             if !winnerMenu{
                                 Button(action: {
-                                    menuOptions = true
+                                    if !menuOptions{
+                                        menuOptions = true
+                                    }else{
+                                        menuOptions = false
+                                    }
                                     
                                 }) {
                                     Image(systemName: "list.bullet.circle")
@@ -251,18 +255,19 @@ struct MultiplayerGameView: View {
                                 }
                                 .position(x: UIScreen.main.bounds.width / 6.2, y: 10)
                                 
-                                
-                                Button(action: {
-                                    hideCardBtn()
-                                    
-                                }) {
-                                    Image(systemName: hideCards ? "eye.circle" : "eye.slash.circle")
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
-                                    
-                                    
+                                if !nextPlayerMenu && !menuOptions{
+                                    Button(action: {
+                                        hideCardBtn()
+                                        
+                                    }) {
+                                        Image(systemName: hideCards ? "eye.circle" : "eye.slash.circle")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                        
+                                        
+                                    }
+                                    .position(x: UIScreen.main.bounds.width / 1.17, y: 10)
                                 }
-                                .position(x: UIScreen.main.bounds.width / 1.17, y: 10)
                                 
                             }
                             
@@ -335,6 +340,9 @@ struct MultiplayerGameView: View {
                                                 .cornerRadius(10)
                                                 .padding(6)
                                                 .offset(getOffset(index: index))
+                                                .shadow(color: selectedCard == index && matchManager.isDrawing ? .gray : .clear, radius: 6, x: 0, y: 4)
+                                                .blur(radius: selectedCard == index && matchManager.isDrawing ? 4 : 0)
+                                                .opacity(matchManager.isDrawing ? 1 : 0.4)
                                         }
                                         
                                         
@@ -355,23 +363,23 @@ struct MultiplayerGameView: View {
                         HStack{
                             Spacer()
                     
-                            if !matchManager.isStacking && (matchManager.cards[matchManager.currentPlayer][selectedCard]?.color == matchManager.lastDrawnCard?.color || matchManager.cards[matchManager.currentPlayer][selectedCard]?.value == matchManager.lastDrawnCard?.value || (matchManager.cards[matchManager.currentPlayer][selectedCard]?.color == "Black")) && matchManager.isDrawing && !hideCards {
+                            if !matchManager.isStacking && (matchManager.cards[matchManager.currentPlayer][selectedCard]?.color == matchManager.lastDrawnCard?.color || matchManager.cards[matchManager.currentPlayer][selectedCard]?.value == matchManager.lastDrawnCard?.value || (matchManager.cards[matchManager.currentPlayer][selectedCard]?.color == "Black")) && matchManager.isDrawing && !nextPlayerMenu {
                                 Button(action: {
                                     replaceCard(cardIndex: selectedCard)
                                     
                                 }) {
-                                    Text("Draw card")
+                                    Text("Play card")
                                         .font(.system(size: 25, weight: .bold)) .frame(width: 200, height: 60)
                                         .foregroundColor(.white)
                                         .background(.blue)
                                         .cornerRadius(30)
                                 }
-                            }else if matchManager.isStacking && (matchManager.cards[matchManager.currentPlayer][selectedCard]?.value == matchManager.lastDrawnCard?.value)  && matchManager.isDrawing && matchManager.allowStacking && !hideCards{
+                            }else if matchManager.isStacking && (matchManager.cards[matchManager.currentPlayer][selectedCard]?.value == matchManager.lastDrawnCard?.value)  && matchManager.isDrawing && matchManager.allowStacking && !nextPlayerMenu{
                                 Button(action: {
                                     replaceCard(cardIndex: selectedCard)
                                     
                                 }) {
-                                    Text("Draw card")
+                                    Text("Play card")
                                         .font(.system(size: 25, weight: .bold)) .frame(width: 200, height: 60)
                                         .foregroundColor(.white)
                                         .background(.blue)
@@ -688,6 +696,7 @@ struct MultiplayerGameView: View {
             for i in 0..<matchManager.numberOfPlayers{
                 if matchManager.cards[i].count > 0{
                     winnerStatus[i] = true
+                    matchManager.cards[i].removeAll()
                     matchManager.winnerArray.append(matchManager.playerNames[i])
                     matchManager.winnerPos[i] = positions[winnerIndex]
                     winners += 1
@@ -706,36 +715,39 @@ struct MultiplayerGameView: View {
         }
         
         matchManager.isStacking = false
-        matchManager.currentPlayer += (addTurn * opposite)
-        matchManager.currentPlayer %= matchManager.numberOfPlayers
         
-        
+        for _ in 0..<addTurn{
+            matchManager.currentPlayer += (1 * opposite)
+            matchManager.currentPlayer %= matchManager.numberOfPlayers
+            for _ in 0..<matchManager.numberOfPlayers{
+                if matchManager.currentPlayer < 0{
+                    matchManager.currentPlayer = (matchManager.numberOfPlayers - 1)
+                }
+                if matchManager.currentPlayer == 0 && matchManager.cards[0].count <= 0{
+                    matchManager.currentPlayer += (1 * opposite)
+                }
+                else if matchManager.currentPlayer == 1 && matchManager.cards[1].count <= 0{
+                    matchManager.currentPlayer += (1 * opposite)
+                }
+                else if matchManager.currentPlayer == 2 && matchManager.cards[2].count <= 0{
+                    matchManager.currentPlayer += (1 * opposite)
+                }
+                else if matchManager.currentPlayer == 3 && matchManager.cards[3].count <= 0{
+                    matchManager.currentPlayer += (1 * opposite)
+                }else{
+                    break
+                }
+                matchManager.currentPlayer %= matchManager.numberOfPlayers
+            }
+            matchManager.currentPlayer %= matchManager.numberOfPlayers
+        }
         
         if matchManager.currentPlayer < 0{
             matchManager.currentPlayer = (matchManager.numberOfPlayers - 1)
+        }else if matchManager.currentPlayer > 4{
+            matchManager.currentPlayer = 0
         }
-        
-        for _ in 0..<4{
-            if matchManager.currentPlayer == 0 && matchManager.cards[0].count <= 0{
-                matchManager.currentPlayer += (addTurn * opposite)
-            }
-            else if matchManager.currentPlayer == 1 && matchManager.cards[1].count <= 0{
-                matchManager.currentPlayer += (addTurn * opposite)
-            }
-            else if matchManager.currentPlayer == 2 && matchManager.cards[2].count <= 0{
-                matchManager.currentPlayer += (addTurn * opposite)
-            }
-            else if matchManager.currentPlayer == 3 && matchManager.cards[3].count <= 0{
-                matchManager.currentPlayer += (addTurn * opposite)
-            }else{
-                break
-            }
-        }
-        matchManager.currentPlayer %= matchManager.numberOfPlayers
-        
-        if matchManager.currentPlayer < 0{
-            matchManager.currentPlayer = (matchManager.numberOfPlayers - 1)
-        }
+
         
         print("currPlayer: \(matchManager.currentPlayer)")
         
@@ -778,7 +790,7 @@ struct MultiplayerGameView: View {
     }
     
     func replaceCard(cardIndex: Int){
-        playCardSound()
+        //playCardSound()
         if selectedCard != 0{
             selectedCard = selectedCard - 1
         }else{
@@ -794,13 +806,21 @@ struct MultiplayerGameView: View {
                 endTurn()
             }
             
-            if matchManager.lastDrawnCard?.value == "Reverse"{
+            if matchManager.lastDrawnCard?.value == "Reverse" && matchManager.numberOfPlayers - matchManager.winnerArray.count > 2{
                 if !matchManager.oppositeTurn{
                     matchManager.oppositeTurn = true
                 }else{
                     matchManager.oppositeTurn = false
                 }
-            }else if matchManager.lastDrawnCard?.value == "Skip"{
+            }else if matchManager.lastDrawnCard?.value == "Reverse" && matchManager.numberOfPlayers - matchManager.winnerArray.count <= 2{
+                if !matchManager.oppositeTurn{
+                    matchManager.oppositeTurn = true
+                }else{
+                    matchManager.oppositeTurn = false
+                }
+                addTurn += 1
+            }
+            else if matchManager.lastDrawnCard?.value == "Skip"{
                 addTurn += 1
             }
             

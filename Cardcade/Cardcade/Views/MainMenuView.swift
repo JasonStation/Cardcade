@@ -1,5 +1,5 @@
 //
-//  MainMenuVIew.swift
+//  MainMenuView.swift
 //  Cardcade
 //
 //  Created by Jason Leonardo on 19/05/23.
@@ -82,7 +82,7 @@ struct MainMenuView: View {
                         .padding()
                     
                     Button(action: {
-                        playMode = 1
+                        //playMode = 1
                         matchManager.startMatchmaking()
                     }) {
                         Image(systemName: "globe.europe.africa.fill")

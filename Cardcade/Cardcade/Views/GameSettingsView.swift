@@ -20,13 +20,13 @@ struct GameSettingsView: View {
     
     var body: some View {
         if menuIndex == 0{
-            ScrollView(){
+            
                 VStack {
                     HStack{
                         Text("Game Settings")
                             .font(.largeTitle)
                             .bold()
-                            .padding(.vertical, 50)
+                            .padding(.vertical, 30)
                             .padding(.horizontal, 30)
                         
                         Button(action: {
@@ -39,118 +39,119 @@ struct GameSettingsView: View {
                         }.padding(20)
                         
                     }
-                    
-                    
-                    Toggle(isOn: $matchManager.allowStacking) {
-                        Text("Allow card stacking")
-                            .font(.headline)
-                    }
-                    .font(.title2)
-                    .padding(.horizontal, 100)
-                    .padding(.bottom, 50)
-                    
-                    
-                    Text("Starting card amount:")
-                        .font(.title2)
-                    
-                    
-                    HStack{
+                    ScrollView(){
+                    VStack{
                         
-                        Button(action: {
-                            subtractCard()
-                        }) {
-                            Text("-")
-                                .font(.system(size: 25, weight: .bold))
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.white)
-                                .background(.blue)
-                                .cornerRadius(30)
-                        }.padding()
-                        
-                        Text("\(matchManager.cardAmount)")
-                            .font(.largeTitle)
-                            .bold()
-                        
-                        Button(action: {
-                            addCard()
-                        }) {
-                            Text("+")
-                                .font(.system(size: 25, weight: .bold))
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.white)
-                                .background(.blue)
-                                .cornerRadius(30)
-                        }.padding()
-                        
-                    }.padding(.bottom, 20)
-                    
-                    
-                    
-                    Text("Number of players:")
-                        .font(.title2)
-                    
-                    HStack{
-                        
-                        Button(action: {
-                            subtractPlayer()
-                        }) {
-                            Text("-")
-                                .font(.system(size: 25, weight: .bold))
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.white)
-                                .background(.blue)
-                                .cornerRadius(30)
-                        }.padding()
-                        
-                        Text("\(matchManager.numberOfPlayers)")
-                            .font(.largeTitle)
-                            .bold()
-                        
-                        Button(action: {
-                            addPlayer()
-                        }) {
-                            Text("+")
-                                .font(.system(size: 25, weight: .bold))
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.white)
-                                .background(.blue)
-                                .cornerRadius(30)
-                        }.padding()
-                        
-                    }.padding(.bottom, 20)
-                    
-                    ForEach(0..<Int(matchManager.numberOfPlayers), id: \.self) { index in
-                        Text("Player \(index + 1) Name").bold()
-                        TextField("Player \(index + 1) Name", text: $matchManager.playerNames[index])
-                            .font(.title2)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 300)
-                            .padding()
-                    }
-                    
-                    if visibleWarning{
-                        Text("Player name cannot exceed 8 characters.")
-                            .foregroundColor(.red)
-                    }
-                    
-                    Button(action: {
-                        if !checkForMaxCharacters(){
-                            startGame()
-                        }else{
-                            visibleWarning = true
+                        Toggle(isOn: $matchManager.allowStacking) {
+                            Text("Allow card stacking")
+                                .font(.headline)
                         }
-                    }) {
-                        Text("Start Game")
+                        .font(.title2)
+                        .padding(.horizontal, 100)
+                        .padding(.bottom, 50)
+                        
+                        
+                        Text("Starting card amount:")
                             .font(.title2)
-                            .foregroundColor(.white)
-                            .frame(width: 200 )
-                            .bold()
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(30)
+                        
+                       
+                        HStack{
+                            
+                            Button(action: {
+                                subtractCard()
+                            }) {
+                                Text("-")
+                                    .font(.system(size: 25, weight: .bold))
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.white)
+                                    .background(.blue)
+                                    .cornerRadius(30)
+                            }.padding()
+                            
+                            Text("\(matchManager.cardAmount)")
+                                .font(.largeTitle)
+                                .bold()
+                            
+                            Button(action: {
+                                addCard()
+                            }) {
+                                Text("+")
+                                    .font(.system(size: 25, weight: .bold))
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.white)
+                                    .background(.blue)
+                                    .cornerRadius(30)
+                            }.padding()
+                            
+                        }.padding(.bottom, 20)
+                        
+                        
+                        
+                        Text("Number of players:")
+                            .font(.title2)
+                        
+                        HStack{
+                            
+                            Button(action: {
+                                subtractPlayer()
+                            }) {
+                                Text("-")
+                                    .font(.system(size: 25, weight: .bold))
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.white)
+                                    .background(.blue)
+                                    .cornerRadius(30)
+                            }.padding()
+                            
+                            Text("\(matchManager.numberOfPlayers)")
+                                .font(.largeTitle)
+                                .bold()
+                            
+                            Button(action: {
+                                addPlayer()
+                            }) {
+                                Text("+")
+                                    .font(.system(size: 25, weight: .bold))
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.white)
+                                    .background(.blue)
+                                    .cornerRadius(30)
+                            }.padding()
+                            
+                        }.padding(.bottom, 20)
+                        
+                        ForEach(0..<Int(matchManager.numberOfPlayers), id: \.self) { index in
+                            Text("Player \(index + 1) Name").bold()
+                            TextField("Player \(index + 1) Name", text: $matchManager.playerNames[index])
+                                .font(.title2)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 300)
+                                .padding()
+                        }
+                        
+                        if visibleWarning{
+                            Text("Player name cannot exceed 8 characters.")
+                                .foregroundColor(.red)
+                        }
+                        
+                        Button(action: {
+                            if !checkForMaxCharacters(){
+                                startGame()
+                            }else{
+                                visibleWarning = true
+                            }
+                        }) {
+                            Text("Start Game")
+                                .font(.title2)
+                                .foregroundColor(.white)
+                                .frame(width: 200 )
+                                .bold()
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(30)
+                        }
+                        .padding()
                     }
-                    .padding()
-                    
                     Spacer()
                 }
             }
