@@ -1,6 +1,8 @@
 # Cardcade
 A digital remake of the classic card game: UNO! This is an app that is meant to run on iPhones and iPads in portrait orientation.
 
+<img src="https://github.com/JasonStation/Cardcade/assets/110545276/1eff0ef4-0ea1-4f72-b7f8-19bfb4eb1e4b" alt="Image Description" width="400">
+
 Classic Card Matching Game:
 The gameplay of this app is similar to that of the classic game UNO, a game that is fun to play with friends in any occasion!
 
@@ -24,7 +26,7 @@ HOW TO PLAY UNO (Cardcade):
 
 4. Playing a card: When it's your turn, you can play a card from your hand by placing it on top of the discard pile face-up. The card you play must match the color, number, or symbol of the previous card played. If you don't have a playable card, you must draw a card from the deck.
 
-5. Stacking cards: This isn't an official rule but it is what players have loved doing. Players can stack cards. Stacking cards means that the player can draw multiple cards with the same number/symbol. For example, if the last drawn card is a red 7, the player can draw a red 3, a blue 3, and a green 3 all once.
+5. Stacking cards: This isn't an official rule but it is what players have loved doing. Players can stack cards. Stacking cards means that the player can draw multiple cards with the same number/symbol. For example, if the last drawn card is a red 7, the player can draw a red 3, a blue 3, and a green 3 all at once.
 
 6. Special cards: UNO has some special cards with unique effects. Here are the most common ones:
    - Skip: When you play this card, the next player in turn is skipped, and it goes to the player after them.
