@@ -3,6 +3,8 @@ A digital remake of the classic card game: UNO! This is an app that is meant to 
 
 <img src="https://github.com/JasonStation/Cardcade/assets/110545276/1eff0ef4-0ea1-4f72-b7f8-19bfb4eb1e4b" alt="Image Description" width="400">
 
+# About the App
+
 Classic Card Matching Game:
 The gameplay of this app is similar to that of the classic game UNO, a game that is fun to play with friends in any occasion!
 
